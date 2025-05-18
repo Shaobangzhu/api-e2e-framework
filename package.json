@@ -1,0 +1,29 @@
+{
+  "name": "api-e2e-framework",
+  "version": "1.0.0",
+  "description": "api end to end test framework in typescript",
+  "homepage": "https://github.com/Shaobangzhu/api-e2e-framework#readme",
+  "bugs": {
+    "url": "https://github.com/Shaobangzhu/api-e2e-framework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shaobangzhu/api-e2e-framework.git"
+  },
+  "license": "ISC",
+  "author": "clu",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.1",
+    "ts-jest": "^29.3.4"
+  },
+  "dependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/supertest": "^6.0.3"
+  }
+}
