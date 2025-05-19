@@ -11,6 +11,19 @@ describe("Brands", () => {
     expect(Object.keys(res.body[0])).toEqual(["_id", "name"]);
   });
 
+  it.only('Schema Verification - Name is a mandatory field', async () => {
+    const wrongFormattedData = {
+        'name': '',
+        'description': 'Test Brand Description'
+    }
+    const res = await supertest(baseURL)
+        .post('/brands')
+        .send(wrongFormattedData)
+    
+    expect(res.statusCode).toEqual(422)
+    expect(res.body.error).toEqual('Name is required')
+  });
+
   describe("Create, Get, Update, and Delete a brand", () => {
     let newBrand: any;
 
