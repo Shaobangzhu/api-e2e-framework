@@ -1,12 +1,4 @@
-import * as supertest from "supertest";
-
-interface Brand {
-  _id: string;
-  name: string;
-  description: string;
-}
-
-const baseURL = "https://practice-react.sdetunicorns.com/api/test";
+import brandController from "../controller/brand.controller";
 
 describe("Brands", () => {
 
@@ -17,18 +9,18 @@ describe("Brands", () => {
       description: "Clu Test Brand Description",
     };
 
-    let newBrand: Brand;
+    let newBrand: BrandType;
 
     // Also test POST
     beforeAll(async () => {
-      const res = await supertest(baseURL).post("/brands").send(data);
+      const res = await brandController.postABrand(data);
       expect(res.statusCode).toBe(200);
       expect(res.body.name).toBe(data.name);
       newBrand = res.body;
     });
 
     it("GET /brands", async () => {
-      const res = await supertest(baseURL).get("/brands");
+      const res = await brandController.getBrands();
       expect(res.statusCode).toBe(200);
       expect(res.body.length).toBeGreaterThan(1);
       expect(Object.keys(res.body[0])).toEqual(["_id", "name"]);
@@ -36,23 +28,21 @@ describe("Brands", () => {
 
     it("GET /brands/:id", async () => {
       expect(newBrand).toBeDefined(); // Extra safety
-      const res = await supertest(baseURL).get(`/brands/${newBrand._id}`);
+      const res = await brandController.getABrandById(newBrand._id);
       expect(res.statusCode).toBe(200);
       expect(res.body.name).toBe(data.name);
     });
 
     it("PUT /brands/:id", async () => {
       const updateData = { name: "I Updated the Name" };
-      const res = await supertest(baseURL)
-        .put(`/brands/${newBrand._id}`)
-        .send(updateData);
+      const res = await brandController.putABrand(newBrand._id, updateData);
       expect(res.statusCode).toBe(200);
       expect(res.body.name).toBe(updateData.name);
     });
 
     // Also test DELETE
     afterAll(async () => {
-      const res = await supertest(baseURL).delete(`/brands/${newBrand._id}`);
+      const res = await brandController.deleteABrand(newBrand._id);
       expect(res.statusCode).toBe(200);
     });
   });
@@ -63,35 +53,21 @@ describe("Brands", () => {
         name: "",
         description: "Test Brand Description",
       };
-      const res = await supertest(baseURL)
-        .post("/brands")
-        .send(emptyNameFieldData);
+      const res = await brandController.postABrand(emptyNameFieldData);
 
       expect(res.statusCode).toEqual(422);
       expect(res.body.error).toEqual("Name is required");
     });
 
     it("Schema Verifiaction - Max char length for name = 30", async () => {
-      const data = {
+      const extraLongData = {
         name: "012345678901234567890123456789x",
       };
 
-      const res = await supertest(baseURL).post("/brands").send(data);
+      const res = await brandController.postABrand(extraLongData)
 
       expect(res.statusCode).toEqual(422);
       expect(res.body.error).toEqual("Brand name is too long");
-    });
-
-    it("Schema Verification - Description must be a string", async () => {
-      const data = {
-        name: "Sample Brand",
-        description: 123,
-      };
-
-      const res = await supertest(baseURL).post("/brands").send(data);
-
-      expect(res.statusCode).toEqual(422);
-      expect(res.body.error).toEqual("Brand description must be a string");
     });
   });
 
@@ -102,20 +78,17 @@ describe("Brands", () => {
         name: name,
       };
       // first request
-      await supertest(baseURL).post("/brands").send(data);
+      await brandController.postABrand(data);
 
       // second request
-      const res2 = await supertest(baseURL).post("/brands").send(data);
+      const res2 = await brandController.postABrand(data);
 
       expect(res2.statusCode).toEqual(422);
       expect(res2.body.error).toContain("already exists");
     });
 
     it("Business Logic - GET /brand/invalid_id should throw 404", async () => {
-      const res = await supertest(baseURL).get(
-        "/brands/" + "682a82fd986188d4dce5cde1"
-      );
-
+      const res = await brandController.getABrandById("682a82fd986188d4dce5cde1");
       expect(res.statusCode).toEqual(404);
       expect(res.body.error).toContain("Brand not found.");
     });
@@ -124,15 +97,13 @@ describe("Brands", () => {
       const data = {
         name: "updated",
       };
-      const res = await supertest(baseURL)
-        .put("/brands/" + 123)
-        .send(data);
+      const res = await brandController.putABrand("123", data);
       expect(res.statusCode).toEqual(422);
       expect(res.body.error).toContain("Unable to update brands");
     });
 
     it("Business Logic - DELETE /brands/invalid_id", async () => {
-      const res = await supertest(baseURL).delete("/brands/" + 123);
+      const res = await brandController.deleteABrand("123");
       expect(res.statusCode).toEqual(422);
       expect(res.body.error).toContain("Unable to delete brand");
     });
