@@ -9,4 +9,19 @@ module.exports = {
     ...tsJestTransformCfg,
   },
   setupFiles: ["<rootDir>/jest.setup.ts"], // 👈 Add this line
+  reporters: [
+    "default",
+    [
+      "jest-junit",
+      {
+        outputDirectory: "reports",
+      },
+    ],
+    [
+      "jest-html-reporters",
+      {
+        publicPath: "reports",
+      },
+    ],
+  ],
 };

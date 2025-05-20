@@ -2,7 +2,7 @@ import * as supertest from "supertest";
 
 const request = supertest("https://jsonplaceholder.typicode.com/");
 
-describe.skip("POC Tests", () => {
+describe("POC Tests", () => {
 
   describe("GET Requests", () => {
     it("GET /posts", async () => {
