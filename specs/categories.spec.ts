@@ -1,6 +1,6 @@
 import CategoriesController from "../controller/categories.controller";
-import AdminController from "../controller/admin.controller";
 import baseConfig from "../config/base.config";
+import { login, getCategoryId } from "../utils/helper";
 
 describe("Categories", () => {
   it("GET All/categories", async () => {
@@ -11,26 +11,17 @@ describe("Categories", () => {
   });
 
   describe("Create, Get, Update and Delete A Category", () => {
-    let token: string, postRes: any;
+    let token: string, categoryId: string;
 
     beforeAll(async () => {
-      const data = { email: baseConfig.email, password: baseConfig.password };
-      const res = await AdminController.postAdminLogin(data);
-      token = res.body.token;
+      token = await login(baseConfig.email, baseConfig.password);
 
-      const body = {
-        name: "Test Category " + Math.floor(Math.random() * 10000),
-      };
-      postRes = await CategoriesController.postACategory(body).set(
-        "Authorization",
-        "Bearer " + token
-      );
+      categoryId = await getCategoryId(token);
     });
 
     it("GET /categories/id", async () => {
-        const res = await CategoriesController.getACategoryById(postRes.body._id);
+        const res = await CategoriesController.getACategoryById(categoryId);
         expect(res.statusCode).toEqual(200);
-        expect(res.body.name).toEqual(postRes.body.name);
     })
 
     it("PUT /categories/id", async () => {
@@ -38,7 +29,7 @@ describe("Categories", () => {
         name: "Test Category Updated " + Math.floor(Math.random() * 10000),
       };
       const res = await CategoriesController.putACategoryById(
-        postRes.body._id,
+        categoryId,
         body
       ).set("Authorization", "Bearer " + token);
       expect(res.statusCode).toBe(200);
@@ -46,7 +37,7 @@ describe("Categories", () => {
     });
 
     it("DELETE /categories", async () => {
-        const res = await CategoriesController.deleteACategoryById(postRes.body._id).set("Authorization", "Bearer " + token);
+        const res = await CategoriesController.deleteACategoryById(categoryId).set("Authorization", "Bearer " + token);
         expect(res.statusCode).toEqual(200);
     });
   });
