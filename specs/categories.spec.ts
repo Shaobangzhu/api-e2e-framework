@@ -3,7 +3,7 @@ import AdminController from "../controller/admin.controller";
 import baseConfig from "../config/base.config";
 
 describe("Categories", () => {
-  it("GET /categories", async () => {
+  it("GET All/categories", async () => {
     const res = await CategoriesController.getCategories();
     expect(res.statusCode).toEqual(200);
     expect(res.body.length).toBeGreaterThan(1);
