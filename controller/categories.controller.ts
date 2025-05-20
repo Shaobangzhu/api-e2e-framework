@@ -1,5 +1,7 @@
 import * as supertest from 'supertest';
 import config from '../config/base.config';
+import { DataType } from '../interfaces/DataType';
+
 const request = supertest(config.baseUrl);
 
 class CategoriesController {
@@ -7,23 +9,23 @@ class CategoriesController {
     return request.get('/categories');
   }
 
-  getCategoriesById(id: string) {
+  getACategoryById(id: string) {
     return request.get('/categories/' + id)
   }
 
-  postCategories(data: DataType) {
+  postACategory(data: DataType) {
     return request
       .post('/categories')
       .send(data)
   }
 
-  putCategories(id: string, data: DataType) {
+  putACategoryById(id: string, data: DataType) {
     return request
       .put('/categories/' + id)
       .send(data)
   }
 
-  deleteCategories(id: string) {
+  deleteACategoryById(id: string) {
     return request
       .delete('/categories/' + id)
   }

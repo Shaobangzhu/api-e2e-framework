@@ -1,3 +1,3 @@
-interface DataType {
+export interface DataType {
     [key: string]: string
 }

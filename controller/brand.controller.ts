@@ -1,5 +1,6 @@
 import * as supertest from 'supertest';
 import config from '../config/base.config';
+import { DataType } from '../interfaces/DataType';
 
 const request = supertest(config.baseUrl);
 

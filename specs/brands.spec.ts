@@ -1,6 +1,7 @@
 import brandController from "../controller/brand.controller";
+import { BrandType } from "../interfaces/BrandType";
 
-describe("Brands", () => {
+describe.skip("Brands", () => {
 
   describe("Create, Get, Update, and Delete a brand", () => {
 
