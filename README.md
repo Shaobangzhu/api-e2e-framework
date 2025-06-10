@@ -24,7 +24,7 @@ A lightweight end-to-end (E2E) testing framework for RESTful APIs using **Supert
 - 📦 Built-in support for environment variables and config separation
 
 ## 📦 Project Structure
-
+```bash
 api-e2e-framework/
 ├── config/
 ├── controller/
@@ -36,7 +36,7 @@ api-e2e-framework/
 ├── jest.config.ts
 ├── tsconfig.json
 └── package.json
-
+```
 
 ## 🛠️ Installation
 
