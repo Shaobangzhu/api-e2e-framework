@@ -82,9 +82,3 @@ Update API base URL or other test settings in src/config/testConfig.ts:
 ```bash
 export const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 ```
-
-## 📄 License
-
----
-
-If you want, I can update this to match your exact folder structure or point to specific endpoints/tests in your project. Just let me know!
